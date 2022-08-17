@@ -1,7 +1,7 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
-import AppContext from '../../context/AppContext'
+import AppContext from '../../context'
 import {
   MainContainer,
   DetailsContainer,
@@ -66,19 +66,20 @@ class LoginForm extends Component {
     return (
       <AppContext.Consumer>
         {value => {
-          const {isDark} = value
-          console.log(isDark)
-          const logo = isDark
-            ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
+          const {isdark} = value
+          console.log(isdark)
+          const theme = isdark ? 'dark' : 'light'
+          const logo = isdark
+            ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-isdark-theme-img.png'
             : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
           return (
-            <MainContainer isDark={isDark}>
-              <DetailsContainer isDark={isDark}>
+            <MainContainer theme={theme}>
+              <DetailsContainer theme={theme}>
                 <LogoContainer>
                   <LoginLogo src={logo} alt="Website Logo" />
                 </LogoContainer>
                 <Form onSubmit={this.checkUser}>
-                  <Label htmlFor="username" isDark={isDark}>
+                  <Label htmlFor="username" theme={theme}>
                     USERNAME
                   </Label>
                   <Input
@@ -87,9 +88,9 @@ class LoginForm extends Component {
                     value={username}
                     placeholder="Username"
                     id="username"
-                    isDark={isDark}
+                    theme={theme}
                   />
-                  <Label htmlFor="password" isDark={isDark}>
+                  <Label htmlFor="password" theme={theme}>
                     PASSWORD
                   </Label>
                   <Input
@@ -98,7 +99,7 @@ class LoginForm extends Component {
                     value={[password]}
                     placeholder="Password"
                     id="password"
-                    isDark={isDark}
+                    theme={theme}
                     space
                   />
                   <CheckboxContainer>

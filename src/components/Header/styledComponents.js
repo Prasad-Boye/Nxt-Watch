@@ -3,11 +3,14 @@ import Popup from 'reactjs-popup'
 
 export const MainContainer = styled.div`
   display: flex;
-  padding: 20px 50px;
+  height: 90px;
+  padding: 2% 5%;
   align-items: center;
   justify-content: space-between;
-  color: ${props => (props.isDark ? '#fff' : '#000')};
-  background-color: ${props => (props.isDark ? '#1e293b' : '#ffffff')};
+  color: ${props => (props.theme === 'dark' ? '#fff' : '#000')};
+  background-color: ${props =>
+    props.theme === 'dark' ? '#1e293b' : '#f9f9f9'};
+  margin: 0px;
 `
 export const Img = styled.img`
   width: ${props => (props.logo ? '120px' : '35px')};
@@ -25,11 +28,10 @@ export const HeaderDetailsContainer = styled.div`
 export const ThemeButton = styled.button`
   background-color: transparent;
   border: none;
-  font-size: ${props => (props.close ? '25px' : '35px')};
+  font-size: 25px;
   width: 40px;
-  color: ${props => (props.isDark ? '#ffffff' : '#000000')};
+  color: ${props => (props.theme === 'dark' ? '#ffffff' : '#000000')};
   align-self: ${props => (props.close ? 'flex-end' : '')};
-  margin-right: ${props => (props.close ? '30px' : '')};
   font-weight: ${props => (props.close ? 'bold' : '')};
 `
 
@@ -38,8 +40,8 @@ export const Button = styled.button`
   height: 30px;
   width: 80px;
   font-weight: 600;
-  color: ${props => (props.isDark ? '#f9f9f9' : '#3b82f6')};
-  border: 2px solid ${props => (props.isDark ? '#f9f9f9' : '#3b82f6')};
+  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#3b82f6')};
+  border: 2px solid ${props => (props.theme === 'dark' ? '#f9f9f9' : '#3b82f6')};
 `
 export const HeaderXS = styled.div`
   @media (min-width: 767px) {

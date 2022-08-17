@@ -1,7 +1,7 @@
 import React from 'react'
 
 const AppContext = React.createContext({
-  isDark: false,
+  isdark: false,
   changeTheme: () => {},
 })
 
