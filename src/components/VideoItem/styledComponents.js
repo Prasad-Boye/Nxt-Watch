@@ -1,15 +1,21 @@
 import styled from 'styled-components'
+import {Link} from 'react-router-dom'
 
-export const Li = styled.li`
+export const LinkItem = styled(Link)`
   width: 32%;
   margin-bottom: 50px;
-  @media (max-width: 767px) {
+  margin-right: 1%;
+  @media (max-width: 991px) {
     width: 48%;
   }
   @media (max-width: 479px) {
     width: 100%;
+    margin-right: 4%;
   }
+  text-decoration: none;
 `
+
+export const Li = styled.li``
 
 export const Thumbnail = styled.img`
   width: ${props => (props.channel ? '50px' : '100%')};
@@ -19,14 +25,14 @@ export const Thumbnail = styled.img`
 
 export const SectionDetails = styled.div`
   display: flex;
-  color: ${props => (props.theme === 'dark' ? '#f8fafc' : '')};
+  color: ${props => (props.theme === 'dark' ? '#f8fafc' : '#0f0f0f')};
 `
 
 export const DetailsSection = styled.div`
   display: flex;
   color: ${props => (props.theme === 'dark' ? '#94a3b8' : '')};
 `
-export const H1 = styled.h1`
+export const H1 = styled.p`
   font-size: 16px;
   font-weight: 500;
 `

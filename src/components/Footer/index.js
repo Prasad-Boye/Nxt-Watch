@@ -10,24 +10,20 @@ const Footer = () => (
         <ContactSection theme={theme}>
           <H1>CONTACT US</H1>
           <Ul logo>
-            <li>
-              <Logo
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-                alt="facebook logo"
-              />
-            </li>
-            <li>
-              <Logo
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-                alt="twitter logo"
-              />
-            </li>
-            <li>
-              <Logo
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-                alt="linked in logo"
-              />
-            </li>
+            <Logo
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+            />
+
+            <Logo
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+            />
+
+            <Logo
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+            />
           </Ul>
           <P>Enjoy! now to see your channels and recommendations!</P>
         </ContactSection>

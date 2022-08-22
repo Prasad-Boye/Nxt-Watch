@@ -1,8 +1,9 @@
-import {withRouter} from 'react-router-dom'
+import {useState} from 'react'
+import Popup from 'reactjs-popup'
+import {withRouter, Link} from 'react-router-dom'
 import {GiHamburgerMenu} from 'react-icons/gi'
 import {FaMoon} from 'react-icons/fa'
 import {FiLogOut, FiSun} from 'react-icons/fi'
-import {AiOutlineClose} from 'react-icons/ai'
 import Cookies from 'js-cookie'
 import NavItems from '../NavItems'
 
@@ -15,25 +16,15 @@ import {
   HeaderXS,
   StyledPopup,
   Menu,
+  CloseModal,
+  P,
 } from './styledComponents'
 import AppContext from '../../context'
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-  overlay: {
-    backgroundColor: '#000',
-  },
-}
-
 const Header = props => {
   const {history} = props
+  const [open, setOpen] = useState(false)
+  const closeModal = () => setOpen(false)
   return (
     <AppContext.Consumer>
       {value => {
@@ -53,7 +44,9 @@ const Header = props => {
 
         return (
           <MainContainer theme={theme}>
-            <Img src={logo} alt="website logo" logo />
+            <Link to="/">
+              <Img src={logo} alt="website logo" logo />
+            </Link>
             <HeaderDetailsContainer>
               <ThemeButton type="button" onClick={changeBg} theme={theme}>
                 {isdark ? <FiSun /> : <FaMoon />}
@@ -62,12 +55,21 @@ const Header = props => {
                 src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
                 alt="profile"
               />
-              <Button type="button" theme={theme} onClick={logoutUser}>
+              <Button
+                type="button"
+                theme={theme}
+                onClick={() => setOpen(o => !o)}
+              >
                 Logout
               </Button>
             </HeaderDetailsContainer>
             <HeaderXS>
-              <ThemeButton type="button" onClick={changeBg} theme={theme}>
+              <ThemeButton
+                type="button"
+                onClick={changeBg}
+                theme={theme}
+                data-testid="theme"
+              >
                 {isdark ? <FiSun /> : <FaMoon />}
               </ThemeButton>
               <StyledPopup
@@ -77,22 +79,49 @@ const Header = props => {
                   </ThemeButton>
                 }
                 modal
+                lockScroll
                 position="center center"
                 closeOnDocumentClick
-                style={customStyles}
+                theme={theme}
               >
                 {close => (
                   <Menu>
-                    <ThemeButton type="button" onClick={close}>
-                      <AiOutlineClose />
+                    <ThemeButton
+                      type="button"
+                      onClick={close}
+                      data-testid="close"
+                    >
+                      <CloseModal />
                     </ThemeButton>
                     <NavItems />
                   </Menu>
                 )}
               </StyledPopup>
-              <ThemeButton type="button" onClick={changeBg} theme={theme}>
-                <FiLogOut onClick={logoutUser} />
+              <ThemeButton
+                type="button"
+                onClick={() => setOpen(o => !o)}
+                theme={theme}
+              >
+                <FiLogOut />
               </ThemeButton>
+              <Popup open={open} closeOnDocumentClick onClose={closeModal}>
+                <div className="modal">
+                  <div className="content">
+                    <P>Are you sure, you want to logout?</P>
+                    <button
+                      className="button"
+                      type="button"
+                      onClick={closeModal}
+                    >
+                      Cancel
+                    </button>
+
+                    <button type="button" onClick={logoutUser}>
+                      Confirm
+                    </button>
+                  </div>
+                </div>
+              </Popup>
             </HeaderXS>
           </MainContainer>
         )

@@ -1,6 +1,7 @@
 import {withRouter} from 'react-router-dom'
-import {formatDistanceStrict} from 'date-fns'
+import {formatDistanceToNow} from 'date-fns'
 import {
+  LinkItem,
   Li,
   Thumbnail,
   DetailsSection,
@@ -18,16 +19,9 @@ const VideoItem = props => {
 
   const {name, profileImageUrl} = channel
 
-  const publishedDate = new Date(publishedAt)
-
-  const timeValue = formatDistanceStrict(publishedDate, new Date(), {
+  const timeValue = formatDistanceToNow(new Date(publishedAt), {
     addSuffix: true,
   })
-
-  const getVideoDetails = () => {
-    const {history} = props
-    history.push(`/videos/${id}`)
-  }
 
   return (
     <AppContext.Consumer>
@@ -35,22 +29,26 @@ const VideoItem = props => {
         const {isdark} = value
         const theme = isdark ? 'dark' : 'light'
         return (
-          <Li theme={theme} onClick={getVideoDetails}>
-            <Thumbnail src={thumbnailUrl} alt={title} />
-            <SectionDetails theme={theme}>
-              <Thumbnail channel src={profileImageUrl} alt={name} />
-              <div>
-                <H1>{title}</H1>
-                <P>{name}</P>
-                <DetailsSection theme={theme}>
-                  <P>{viewCount}</P>
-                  <Ul>
-                    <Lim>{timeValue}</Lim>
-                  </Ul>
-                </DetailsSection>
-              </div>
-            </SectionDetails>
-          </Li>
+          <LinkItem to={`/videos/${id}`}>
+            <Li theme={theme}>
+              <Thumbnail src={thumbnailUrl} alt="video thumbnail" />
+              <SectionDetails theme={theme}>
+                <Thumbnail channel src={profileImageUrl} alt="channel logo" />
+                <div>
+                  <H1>{title}</H1>
+                  <P>{name}</P>
+                  <DetailsSection theme={theme}>
+                    <P>{viewCount}</P>
+                    <Ul>
+                      <Lim>
+                        <P>{timeValue}</P>
+                      </Lim>
+                    </Ul>
+                  </DetailsSection>
+                </div>
+              </SectionDetails>
+            </Li>
+          </LinkItem>
         )
       }}
     </AppContext.Consumer>

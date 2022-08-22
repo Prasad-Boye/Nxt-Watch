@@ -1,14 +1,16 @@
 import {Component} from 'react'
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import ReactPlayer from 'react-player/youtube'
-import {formatDistanceStrict} from 'date-fns'
+import {formatDistanceToNow} from 'date-fns'
 import {AiOutlineLike, AiOutlineDislike} from 'react-icons/ai'
-import {MdPlaylistAdd} from 'react-icons/md'
+import {MdPlaylistAdd, MdPlaylistAddCheck} from 'react-icons/md'
 import AppContext from '../../context'
 import Header from '../Header'
 import NavItems from '../NavItems'
 import Footer from '../Footer'
+import FailureView from '../FailureView'
 
 import {
   MainContainer,
@@ -20,7 +22,6 @@ import {
   Ul,
   P,
   Lim,
-  Logo,
   VideoPlayer,
   DetailsSection,
   Button,
@@ -29,6 +30,10 @@ import {
   SectionDetails,
   Description,
   VideoContainer,
+  LoaderContainer,
+  SaveButton,
+  SavedButton,
+  FailureContainer,
 } from './styledComponents'
 
 const apiStatusCode = {
@@ -63,7 +68,6 @@ class VideoItemDetails extends Component {
     const data = await response.json()
     if (response.ok === true) {
       const videoInfo = data.video_details
-      console.log(videoInfo)
       const channel = {
         name: videoInfo.channel.name,
         profileImageUrl: videoInfo.channel.profile_image_url,
@@ -88,9 +92,18 @@ class VideoItemDetails extends Component {
   playVideo = () => {}
 
   loaderView = () => (
-    <div>
-      <Loader type="TailSpin" color="#0b69ff" height="50" width="50" />
-    </div>
+    <LoaderContainer data-testid="loader">
+      <Loader type="ThreeDots" color="#0b69ff" height="50" width="50" />
+    </LoaderContainer>
+  )
+
+  getFailureView = () => (
+    <FailureContainer>
+      <FailureView />
+      <Button retry onClick={this.getItemData}>
+        Retry
+      </Button>
+    </FailureContainer>
   )
 
   VideoDetailsView = () => {
@@ -111,12 +124,53 @@ class VideoItemDetails extends Component {
     return (
       <AppContext.Consumer>
         {value => {
-          const {isdark} = value
+          const {
+            isdark,
+            savedVideos,
+            addToSavedVideos,
+            removeFromSavedVideos,
+            likedVideos,
+            dislikedVideos,
+            addToDislikedList,
+            addToLikedList,
+            removeFromDisliked,
+            removeFromLiked,
+          } = value
+          const isVideoPresent = savedVideos.filter(
+            eachVideo => eachVideo.id === id,
+          )
+          const savedStatus = isVideoPresent.length > 0 ? 'saved' : ''
+          console.log(savedVideos)
+
           const theme = isdark ? 'dark' : 'light'
-          const formattedDate = new Date(publishedAt)
-          const timeValue = formatDistanceStrict(formattedDate, new Date(), {
+          const likedStatus = likedVideos.includes(id) ? 'liked' : ''
+          const disLikedStatus = dislikedVideos.includes(id) ? 'disliked' : ''
+          const timeValue = formatDistanceToNow(new Date(publishedAt), {
             addSuffix: true,
           })
+
+          const saveItem = () =>
+            addToSavedVideos({
+              id,
+              thumbnailUrl,
+              title,
+              viewCount,
+              timeValue,
+              name,
+            })
+          const removeSave = () => removeFromSavedVideos(id)
+
+          const removeLike = () => removeFromLiked(id)
+          const removeDislike = () => removeFromDisliked(id)
+
+          const likeVideo = () => {
+            addToLikedList(id)
+            removeDislike()
+          }
+          const dislikeVideo = () => {
+            addToDislikedList(id)
+            removeLike()
+          }
 
           return (
             <VideoPlayer>
@@ -135,23 +189,43 @@ class VideoItemDetails extends Component {
                   </Ul>
                 </DetailsSection>
                 <DetailsSection>
-                  <Button theme={theme}>
+                  <Button
+                    theme={theme}
+                    likedStatus={likedStatus}
+                    onClick={likeVideo}
+                  >
                     <AiOutlineLike />
                     <P btn>Like</P>
                   </Button>
-                  <Button theme={theme}>
+                  <Button
+                    theme={theme}
+                    likedStatus={disLikedStatus}
+                    onClick={dislikeVideo}
+                  >
                     <AiOutlineDislike />
                     <P btn>Dislike</P>
                   </Button>
-                  <Button theme={theme}>
+                  <SaveButton
+                    theme={theme}
+                    savedStatus={savedStatus}
+                    onClick={saveItem}
+                  >
                     <MdPlaylistAdd />
                     <P btn>Save</P>
-                  </Button>
+                  </SaveButton>
+                  <SavedButton
+                    theme={theme}
+                    savedStatus={savedStatus}
+                    onClick={removeSave}
+                  >
+                    <MdPlaylistAddCheck />
+                    <P btn>Saved</P>
+                  </SavedButton>
                 </DetailsSection>
               </DetailsSection>
               <Hr />
               <SectionDetails theme={theme}>
-                <Thumbnail channel src={profileImageUrl} alt={name} />
+                <Thumbnail channel src={profileImageUrl} alt="channel logo" />
                 <div>
                   <div>
                     <H1>{name}</H1>
@@ -173,6 +247,8 @@ class VideoItemDetails extends Component {
     switch (apiStatus) {
       case apiStatusCode.loading:
         return this.loaderView()
+      case apiStatusCode.failure:
+        return this.getFailureView()
       case apiStatusCode.success:
         return this.VideoDetailsView()
       default:
@@ -181,6 +257,10 @@ class VideoItemDetails extends Component {
   }
 
   render() {
+    const jwtToken = Cookies.get('jwt_token')
+    if (jwtToken === undefined) {
+      return <Redirect to="/login" />
+    }
     return (
       <AppContext.Consumer>
         {value => {
@@ -188,19 +268,16 @@ class VideoItemDetails extends Component {
           const theme = isdark ? 'dark' : 'light'
 
           return (
-            <MainContainer theme={theme}>
+            <MainContainer theme={theme} data-testid="videoItemDetails">
               <HeadElement>
                 <Header theme={theme} />
               </HeadElement>
-              <HomeContents>
+              <HomeContents data-testid="videoItemDetails" theme={theme}>
                 <Navbar theme={theme}>
                   <NavItems />
                   <Footer />
                 </Navbar>
-                <HomeItemsContainer
-                  data-testid="videoItemDetails"
-                  theme={theme}
-                >
+                <HomeItemsContainer theme={theme}>
                   {this.getVideoDetailsView()}
                 </HomeItemsContainer>
               </HomeContents>

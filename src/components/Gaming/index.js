@@ -1,9 +1,8 @@
 import {Component} from 'react'
-import {withRouter, Redirect} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
-import {formatDistanceToNow} from 'date-fns'
-import {HiFire} from 'react-icons/hi'
+import {SiYoutubegaming} from 'react-icons/si'
 import AppContext from '../../context'
 import Header from '../Header'
 import Footer from '../Footer'
@@ -14,23 +13,20 @@ import {
   MainContainer,
   HeadElement,
   HomeContents,
+  SubHeader,
+  Logo,
   Navbar,
   HomeItemsContainer,
   LoaderContainer,
   Ul,
   Li,
   Thumbnail,
-  Div,
   DetailsSection,
-  UlTime,
-  Lim,
-  SubHeader,
-  Logo,
   P,
   H1,
-  FailureContainer,
   Button,
 } from './styledComponents'
+import {FailureContainer} from '../Trending/styledComponents'
 
 const apiStatusCode = {
   initial: 'INITIAL',
@@ -39,18 +35,18 @@ const apiStatusCode = {
   failure: 'FAILURE',
 }
 
-class Trending extends Component {
-  state = {apiStatus: apiStatusCode.initial, trendingVideos: []}
+class GamingRoute extends Component {
+  state = {apiStatus: apiStatusCode.initial, gamingVideos: ''}
 
   componentDidMount() {
-    this.getData()
+    this.fetchData()
   }
 
   componentWillUnmount() {}
 
-  getData = async () => {
+  fetchData = async () => {
     this.setState({apiStatus: apiStatusCode.loading})
-    const url = 'https://apis.ccbp.in/videos/trending'
+    const url = 'https://apis.ccbp.in/videos/gaming'
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       headers: {
@@ -63,9 +59,8 @@ class Trending extends Component {
       const updatedData = data.videos.map(eachVideo =>
         this.getUpdatedData(eachVideo),
       )
-      console.log(updatedData, data)
       this.setState({
-        trendingVideos: updatedData,
+        gamingVideos: updatedData,
         apiStatus: apiStatusCode.success,
       })
     } else {
@@ -74,14 +69,8 @@ class Trending extends Component {
   }
 
   getUpdatedData = videoDetails => {
-    const updatedChannel = {
-      name: videoDetails.channel.name,
-      profileImageUrl: videoDetails.channel.profile_image_url,
-    }
     const videoInfo = {
-      channel: updatedChannel,
       id: videoDetails.id,
-      publishedAt: videoDetails.published_at,
       thumbnailUrl: videoDetails.thumbnail_url,
       title: videoDetails.title,
       viewCount: videoDetails.view_count,
@@ -98,79 +87,47 @@ class Trending extends Component {
   getFailureView = () => (
     <FailureContainer>
       <FailureView />
-      <Button retry onClick={this.getData}>
+      <Button retry onClick={this.fetchData}>
         Retry
       </Button>
     </FailureContainer>
   )
 
-  trendingView = () => {
-    const {trendingVideos} = this.state
+  gamingView = () => (
+    <AppContext.Consumer>
+      {value => {
+        const {isdark} = value
+        const theme = isdark ? 'dark' : 'light'
+        const {gamingVideos} = this.state
+        console.log(gamingVideos)
 
-    return (
-      <AppContext.Consumer>
-        {value => {
-          const {isdark} = value
-          const theme = isdark ? 'dark' : 'light'
-          return (
-            <Ul theme={theme}>
-              {trendingVideos.map(eachVideo => {
-                const {
-                  id,
-                  publishedAt,
-                  thumbnailUrl,
-                  title,
-                  viewCount,
-                  channel,
-                } = eachVideo
+        return (
+          <Ul theme={theme}>
+            {gamingVideos.map(eachVideo => {
+              const {id, thumbnailUrl, viewCount} = eachVideo
+              return (
+                <Li key={id}>
+                  <Thumbnail src={thumbnailUrl} alt="profile" />
+                  <DetailsSection theme={theme}>
+                    <P>{viewCount} Watching Worldwide</P>
+                  </DetailsSection>
+                </Li>
+              )
+            })}
+          </Ul>
+        )
+      }}
+    </AppContext.Consumer>
+  )
 
-                const {name} = channel
-
-                const timeValue = formatDistanceToNow(new Date(publishedAt), {
-                  addSuffix: true,
-                })
-
-                const getVideo = () => {
-                  const {history} = this.props
-                  console.log(history)
-                  history.push(`/videos/${id}`)
-                }
-
-                return (
-                  <Li key={id} onClick={getVideo}>
-                    <Thumbnail src={thumbnailUrl} alt="video thumbnail" />
-                    <Div>
-                      <H1 theme={theme}>{title}</H1>
-                      <P theme={theme} small>
-                        {name}
-                      </P>
-                      <DetailsSection theme={theme}>
-                        <P theme={theme}>{viewCount}</P>
-                        <UlTime>
-                          <Lim>
-                            <P theme={theme}>{timeValue}</P>
-                          </Lim>
-                        </UlTime>
-                      </DetailsSection>
-                    </Div>
-                  </Li>
-                )
-              })}
-            </Ul>
-          )
-        }}
-      </AppContext.Consumer>
-    )
-  }
-
-  getTrendingView = () => {
+  getGamingView = () => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
       case apiStatusCode.loading:
         return this.loaderView()
       case apiStatusCode.success:
-        return this.trendingView()
+        return this.gamingView()
       case apiStatusCode.failure:
         return this.getFailureView()
       default:
@@ -190,23 +147,23 @@ class Trending extends Component {
           const theme = isdark ? 'dark' : 'light'
 
           return (
-            <MainContainer>
+            <MainContainer theme={theme} data-testid="gaming">
               <HeadElement>
                 <Header theme={theme} />
               </HeadElement>
-              <HomeContents theme={theme} data-testid="trending">
+              <HomeContents data-testid="gaming" theme={theme}>
                 <Navbar theme={theme}>
                   <NavItems />
                   <Footer />
                 </Navbar>
-                <HomeItemsContainer theme={theme}>
+                <HomeItemsContainer>
                   <SubHeader theme={theme} data-testid="banner">
                     <Logo theme={theme}>
-                      <HiFire />
+                      <SiYoutubegaming />
                     </Logo>
-                    <h1>Trending</h1>
+                    <H1>Gaming</H1>
                   </SubHeader>
-                  {this.getTrendingView()}
+                  {this.getGamingView()}
                 </HomeItemsContainer>
               </HomeContents>
             </MainContainer>
@@ -217,4 +174,4 @@ class Trending extends Component {
   }
 }
 
-export default withRouter(Trending)
+export default GamingRoute

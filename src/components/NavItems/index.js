@@ -12,7 +12,7 @@ const NavItems = () => (
       const theme = isdark ? 'dark' : 'light'
       return (
         <MainContainer theme={theme}>
-          <NavElement to="/" activeClassName="active" theme={theme}>
+          <NavElement to="/" activeClassName="active" theme={theme} exact>
             <NavIcon>
               <AiFillHome />
             </NavIcon>
@@ -24,17 +24,17 @@ const NavItems = () => (
             </NavIcon>
             <P theme={theme}>Trending</P>
           </NavElement>
-          <NavElement to="/games" activeClassName="active" theme={theme}>
+          <NavElement to="/gaming" activeClassName="active" theme={theme}>
             <NavIcon>
               <SiYoutubegaming />
             </NavIcon>
-            <P theme={theme}>Games</P>
+            <P theme={theme}>Gaming</P>
           </NavElement>
           <NavElement to="/saved-videos" activeClassName="active" theme={theme}>
             <NavIcon>
               <MdPlaylistAdd />
             </NavIcon>
-            <P theme={theme}>Saved Videos</P>
+            <P theme={theme}>Saved videos</P>
           </NavElement>
         </MainContainer>
       )

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
+import {AiOutlineClose} from 'react-icons/ai'
 
 export const MainContainer = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const MainContainer = styled.div`
   justify-content: space-between;
   color: ${props => (props.theme === 'dark' ? '#fff' : '#000')};
   background-color: ${props =>
-    props.theme === 'dark' ? '#1e293b' : '#f9f9f9'};
+    props.theme === 'dark' ? '#313131' : '#f9f9f9'};
   margin: 0px;
 `
 export const Img = styled.img`
@@ -56,17 +57,32 @@ export const HeaderXS = styled.div`
 
 export const StyledPopup = styled(Popup)`
   &-overlay {
-    background-color: #ffffff;
+    background-color: ${props =>
+      props.theme === 'dark' ? '#313131' : '#f9f9f9'};
+    display:flex:
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
   &-content {
-    background-color: #ffffff;
-    height: 100%;
+    background-color: ${props =>
+      props.theme === 'dark' ? '#313131' : '#f9f9f9'};
     width: 100%;
   }
 `
+
+export const CloseModal = styled(AiOutlineClose)`
+  align-self: flex-end;
+  justify-self: flex-end;
+  text-align: right;
+`
+
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
+`
+export const P = styled.p`
+  font-weight: 700;
 `

@@ -7,9 +7,16 @@ export const MainContainer = styled.div`
   color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#0f0f0f')};
   font-family: 'Roboto';
 `
+export const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+`
 
 export const HomeContents = styled.div`
   display: flex;
+  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#0f0f0f')};
 `
 
 export const HomeItemsContainer = styled.div`
@@ -23,7 +30,7 @@ export const HeadElement = styled.div`
   top: 0;
 `
 
-export const H1 = styled.h1`
+export const H1 = styled.p`
   font-size: 16px;
   font-weight: 500;
   margin-top: 25px;
@@ -36,7 +43,7 @@ export const Navbar = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background-color: ${props =>
-    props.theme === 'dark' ? '#1e293b' : '#f9f9f9'};
+    props.theme === 'dark' ? '#313131' : '#f9f9f9'};
   @media (max-width: 767px) {
     display: none;
   }
@@ -90,8 +97,32 @@ export const Button = styled.button`
   justify-content: space-between;
   border: none;
   font-size: 16px;
-  color: ${props => (props.theme === 'dark' ? '#94a3b8' : '')};
+  color: ${props =>
+    props.likedStatus === 'liked' || props.likedStatus === 'disliked'
+      ? '#2563eb'
+      : ' #64748b'};
 `
+
+export const SaveButton = styled.button`
+  background-color: transparent;
+  display: ${props => (props.savedStatus === 'saved' ? 'none' : 'flex')};
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  font-size: 16px;
+  color: ${props => (props.theme === 'dark' ? ' #64748b' : '')};
+`
+
+export const SavedButton = styled.button`
+  background-color: transparent;
+  display: ${props => (props.savedStatus !== 'saved' ? 'none' : 'flex')};
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  font-size: 16px;
+  color: #2563eb;
+`
+
 export const Hr = styled.hr`
   border: none;
   border-top: 1px solid;
@@ -108,4 +139,15 @@ export const SectionDetails = styled.div`
 `
 export const Description = styled.p`
   margin-top: 50px;
+`
+export const FailureContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 5%;
+`
+export const Img = styled.img`
+  width: 50%;
 `

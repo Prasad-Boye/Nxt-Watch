@@ -7,15 +7,21 @@ export const MainContainer = styled.div`
   color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#0f0f0f')};
   font-family: 'Roboto';
 `
+export const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+`
 
 export const HomeContents = styled.div`
   display: flex;
-  background-color: ${props =>
-    props.theme === 'dark' ? '#0f0f0f' : ' #f9f9f9'};
+  color: ${props => (props.theme === 'dark' ? '#f9f9f9' : '#0f0f0f')};
 `
 
 export const HomeItemsContainer = styled.div`
   width: 100%;
+  padding: 20px;
   background-color: ${props =>
     props.theme === 'dark' ? '#0f0f0f' : ' #f9f9f9'};
 `
@@ -25,25 +31,15 @@ export const HeadElement = styled.div`
 `
 
 export const H1 = styled.p`
-  font-size: ${props => (props.small ? '16px' : '20px')};
+  font-size: ${props => (props.noSave ? '30px' : '20px')};
   font-weight: 500;
-  margin: ${props => (props.failure ? '30px' : '')};
+  margin: ${props => (props.noSave ? '30px' : '')};
   margin-bottom: 20px;
-  color: ${props => (props.theme === 'dark' ? '#cbd5e1' : '#181818')};
 `
-
 export const H2 = styled.h1`
-  font-size: ${props => (props.failure ? '30px' : '20px')};
   font-weight: 500;
-  margin: ${props => (props.failure ? '30px' : '')};
+  margin: ${props => (props.noSave ? '30px' : '')};
   margin-bottom: 20px;
-  color: ${props => (props.theme === 'dark' ? '#cbd5e1' : '#181818')};
-`
-
-export const P = styled.p`
-  margin: 5px;
-  margin-left: ${props => (props.btn ? '10px' : '0px')};
-  color: ${props => (props.theme === 'dark' ? '#94a3b8' : '#606060')};
 `
 
 export const Navbar = styled.div`
@@ -59,18 +55,11 @@ export const Navbar = styled.div`
     display: none;
   }
 `
-export const LoaderContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-`
 export const Ul = styled.ul`
   list-style: none;
   padding-left: 0px;
   background-color: ${props =>
     props.theme === 'dark' ? '#0f0f0f' : '#f9f9f9'};
-  padding: 20px;
 `
 export const UlTime = styled.ul`
   display: flex;
@@ -84,10 +73,12 @@ export const DetailsSection = styled.div`
   color: ${props => (props.theme === 'dark' ? '#94a3b8' : '')};
   align-items: center;
 `
-
+export const P = styled.p`
+  margin: 5px;
+  color: ${props => (props.theme === 'dark' ? '#94a3b8' : '#606060')};
+`
 export const Lim = styled.li`
   margin-left: 10px;
-  color: ${props => (props.theme === 'dark' ? '#94a3b8' : '#606060')};
 `
 
 export const Li = styled.li`
@@ -104,11 +95,26 @@ export const Thumbnail = styled.img`
   }
 `
 export const Div = styled.div`
+  width: 50%;
   margin-left: 20px;
   @media (max-width: 479px) {
     margin-left: 0px;
-    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
   }
+`
+
+export const NoVideos = styled.div`
+  min-height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10%;
+`
+
+export const Img = styled.img`
+  width: 50%;
 `
 export const SubHeader = styled.div`
   display: flex;
@@ -129,28 +135,4 @@ export const Logo = styled.div`
   border-radius: 35px;
   margin-right: 20px;
   color: #ff0000;
-`
-export const FailureContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  padding-bottom: 5%;
-`
-
-export const Img = styled.img`
-  width: 50%;
-`
-
-export const Button = styled.button`
-  background-color: ${props => (props.retry ? '#4f46e5' : 'transparent')};
-  color: ${props => (props.retry ? '#ffffff' : '')};
-  border: ${props => (props.get ? '2px solid' : 'none')};
-  font-size: ${props => (props.get || props.retry ? '14px' : '20px')};
-  padding: ${props => (props.get || props.retry ? '8px' : '')};
-  width: ${props => (props.retry ? '80px' : '')};
-  height: ${props => (props.retry ? '40px' : '')};
-  border-radius: ${props => (props.retry ? '5px' : '')};
-  margin-top: ${props => (props.retry ? '20px' : '')};
 `

@@ -24,8 +24,8 @@ export const HeadElement = styled.div`
   top: 0;
 `
 
-export const H1 = styled.p`
-  font-size: ${props => (props.small ? '16px' : '20px')};
+export const H1 = styled.h1`
+  font-size: ${props => (props.failure ? '30px' : '20px')};
   font-weight: 500;
   margin: ${props => (props.failure ? '30px' : '')};
   margin-bottom: 20px;
@@ -38,12 +38,6 @@ export const H2 = styled.h1`
   margin: ${props => (props.failure ? '30px' : '')};
   margin-bottom: 20px;
   color: ${props => (props.theme === 'dark' ? '#cbd5e1' : '#181818')};
-`
-
-export const P = styled.p`
-  margin: 5px;
-  margin-left: ${props => (props.btn ? '10px' : '0px')};
-  color: ${props => (props.theme === 'dark' ? '#94a3b8' : '#606060')};
 `
 
 export const Navbar = styled.div`
@@ -66,49 +60,36 @@ export const LoaderContainer = styled.div`
   min-height: 80vh;
 `
 export const Ul = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   list-style: none;
   padding-left: 0px;
   background-color: ${props =>
     props.theme === 'dark' ? '#0f0f0f' : '#f9f9f9'};
   padding: 20px;
 `
-export const UlTime = styled.ul`
-  display: flex;
-  padding-left: 0px;
-  align-items: center;
-  margin-left: 10px;
-  list-style: disc;
-`
 export const DetailsSection = styled.div`
   display: flex;
   color: ${props => (props.theme === 'dark' ? '#94a3b8' : '')};
   align-items: center;
 `
-
-export const Lim = styled.li`
-  margin-left: 10px;
+export const P = styled.p`
+  margin: 5px;
+  margin-left: ${props => (props.btn ? '10px' : '0px')};
   color: ${props => (props.theme === 'dark' ? '#94a3b8' : '#606060')};
 `
 
 export const Li = styled.li`
-  display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  width: 32%;
   @media (max-width: 479px) {
-    flex-direction: column;
+    width: 48%;
   }
 `
 export const Thumbnail = styled.img`
-  width: 50%;
-  @media (max-width: 479px) {
-    width: 100%;
-  }
-`
-export const Div = styled.div`
-  margin-left: 20px;
-  @media (max-width: 479px) {
-    margin-left: 0px;
-    margin-top: 20px;
-  }
+  width: 100%;
 `
 export const SubHeader = styled.div`
   display: flex;
@@ -131,16 +112,7 @@ export const Logo = styled.div`
   color: #ff0000;
 `
 export const FailureContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
-  justify-content: center;
-  padding-bottom: 5%;
-`
-
-export const Img = styled.img`
-  width: 50%;
 `
 
 export const Button = styled.button`
